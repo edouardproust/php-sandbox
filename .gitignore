@@ -1,8 +1,3 @@
 /data/certificates/
-!/data/certificates/*
-
 /data/counter_page-views/
-!/data/counter_page-views/*
-
 /data/newsletter/
-!/data/newsletter/*
