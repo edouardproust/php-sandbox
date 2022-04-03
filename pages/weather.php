@@ -36,7 +36,6 @@ $weather = new OpenWeather($api_key, $timeout);
 try {
     foreach ($locations as $location => $coordinates) {
         $locations_current[$location] = $weather->getCurrent($coordinates);
-        $locations_lastHours[$location] = $weather->getLastHours($coordinates);
     }
 } catch (CurlException $e) {
     $error = '<b>API error info:</b> ' . $e->getMessage() . '.';
@@ -75,18 +74,6 @@ if ($error) {
                         <div><?= $data['description'] ?></div>
                         <div><b><?= $data['temp'] ?></b></div>
                     </div>
-                </div>
-                <div class="mt-3">
-                    <ul class="list-unstyled">
-                        <?php
-                        $lastHours = $locations_lastHours[$location];
-                        for ($i = count($lastHours) - 1; $i >= count($lastHours) - 15; $i -= 2) : ?>
-                            <?php if (!empty($lastHours[$i])) : ?>
-                                <li class="small text-muted"><?= $lastHours[$i]['time']['hour'] . ' : <b>' . $lastHours[$i]['temp'] . '</b>  - ' . $lastHours[$i]['description'] ?></li>
-                            <?php endif; ?>
-                        <?php
-                        endfor; ?>
-                    </ul>
                 </div>
             </div>
         <?php endforeach; ?>

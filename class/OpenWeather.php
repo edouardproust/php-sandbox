@@ -48,28 +48,6 @@ class OpenWeather
     }
 
     /**
-     * Get the weather data for the last hours
-     *
-     * @param array $coordinates [latitude, longitude]
-     * @return array [(int)'temp', (string)'description' , (string)'icon', (DateTime)'time' ]
-     * 
-     * In a strange way, the API returns data a variable number of hours. 
-     * Sometimes, this number drop to 0... Sometimes it is to 20 without any logic.
-     * This issue comes from OpenWeather, not of our code.
-     */
-    public function getLastHours(array $coordinates): array
-    {
-        $result = [];
-        $data = $this->callAPI($coordinates);
-        if ($data !== null && isset($data["hourly"])) {
-            foreach ($data["hourly"] as $hour) {
-                $result[] = $this->getResult($hour, $data["timezone"]);
-            }
-        }
-        return $result;
-    }
-
-    /**
      * Format the location string to get a proper City name + Country code
      *
      * @param  string $location 'location-name_country-code' (example: 'paris_fr', 'new-york_us')
@@ -135,7 +113,7 @@ class OpenWeather
             'temp'          => $data["main"]["temp"] . '°C',
             'description'   => ucfirst($data["weather"][0]["description"]),
             'icon'          => 'http://openweathermap.org/img/wn/' . $data["weather"][0]["icon"] . $icon_size . '.png',
-            'time'          => $this->getTimeFormated($data["dt"]),
+            'time'          => $this->getTimeFormated($data["dt"], $data["timezone"]),
         ];
     }
 
@@ -146,9 +124,13 @@ class OpenWeather
      * @param  mixed $timezone ($data["timezone"], 'Europe/Paris',...)
      * @return array string[]
      */
-    private function getTimeFormated($timestamp): array
+    private function getTimeFormated($timestamp, $timezone): array
     {
+        if (is_int($timezone)) {
+            $timezone = timezone_name_from_abbr('', $timezone, 0);
+        }
         $date = new DateTime("@" . $timestamp);
+        $date->setTimezone(new DateTimeZone($timezone));
         return  [
             'all' => $date->format('M d g:i a'),
             'date' => $date->format('M d'),
