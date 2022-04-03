@@ -6,6 +6,6 @@ $main_menu = [
     ['pages/guestbook.php', 'Guestbook'],
     ['pages/newsletter.php', 'Get a discount'],
     ['pages/weather.php', 'Weather'],
-    ['blog/index.php', 'Blog'],
-    ['pages/cookies.php', 'Restricted area']
+    ['pages/cookies.php', 'Restricted area'],
+    ['blog/index.php', 'Blog']
 ];
