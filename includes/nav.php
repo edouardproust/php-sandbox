@@ -7,5 +7,5 @@ $main_menu = [
     ['pages/guestbook.php', 'Guestbook'],
     ['pages/newsletter.php', 'Get a discount'],
     ['pages/weather.php', 'Weather'],
-    ['pages/cookies.php', 'Cookies']
+    ['pages/cookies.php', 'Restricted area']
 ];
